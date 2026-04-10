@@ -7,32 +7,33 @@ The loader leverages the Windows API (WinAPI) to interact with the OS kernel, pe
 ## Key Features
 Process Enumeration: Automatically locates a target process (e.g., explorer.exe or notepad.exe) using the Toolhelp32 snapshot API.
 
-**Memory Injection:** Implements a classic injection workflow:
+- **Memory Injection:** Implements a classic injection workflow:
 
-**OpenProcess:** Acquires a handle to the target process.
+- **OpenProcess:** Acquires a handle to the target process.
 
-**VirtualAllocEx:** Allocates memory with executable permissions within the remote process.
+- **VirtualAllocEx:** Allocates memory with executable permissions within the remote process.
 
-**WriteProcessMemory:** Writes the payload into the newly allocated memory space.
+- **WriteProcessMemory:** Writes the payload into the newly allocated memory space.
 
-**Remote Execution:** Utilizes CreateRemoteThread to initiate execution without interrupting the main thread of the host process.
+- **Remote Execution:** Utilizes CreateRemoteThread to initiate execution without interrupting the main thread of the host process.
 
-**Minimal Footprint:** Written in pure C to ensure a small binary size and minimal external dependencies.
+- **Minimal Footprint:** Written in pure C to ensure a small binary size and minimal external dependencies.
 
 ## Execution Workflow
-**PID Discovery:** The loader scans the process list to find the Process ID (PID) of the specified target.
+- **PID Discovery:** The loader scans the process list to find the Process ID (PID) of the specified target.
 
-**Handle Acquisition:** Requests necessary access rights from the Windows kernel.
+- **Handle Acquisition:** Requests necessary access rights from the Windows kernel.
 
-**Payload Deployment:** Allocates a buffer (typically PAGE_EXECUTE_READWRITE) and transfers the shellcode.
+- **Payload Deployment:** Allocates a buffer (typically PAGE_EXECUTE_READWRITE) and transfers the shellcode.
 
-**Thread Creation:** Instructs the remote process to spawn a new thread starting at the shellcode's memory address.
+- **Thread Creation:** Instructs the remote process to spawn a new thread starting at the shellcode's memory address.
 
 ## Compilation
 To compile the loader using MinGW, run:
 
-Bash
+```bash
 gcc main.c -o loader.exe -lkernel32 -luser32
+```
 For Visual Studio (MSVC), ensure you include the Windows SDK and compile for the appropriate architecture (x64/x86) matching your shellcode.
 
 ## Disclaimer
